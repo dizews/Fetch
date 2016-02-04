@@ -254,8 +254,9 @@ class Server
      */
     public function getImapStream()
     {
-        if (!is_resource($this->imapStream))
+        if (!is_resource($this->imapStream) || !imap_ping($this->imapStream)) {
             $this->setImapStream();
+        }
 
         return $this->imapStream;
     }
@@ -306,7 +307,7 @@ class Server
      */
     protected function setImapStream()
     {
-        if (is_resource($this->imapStream)) {
+        if (is_resource($this->imapStream) && imap_ping($this->imapStream)) {
             if (!imap_reopen($this->imapStream, $this->getServerString(), $this->options, 1))
                 throw new \RuntimeException(imap_last_error());
         } else {
