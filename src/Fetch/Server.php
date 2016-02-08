@@ -513,4 +513,11 @@ class Server
      {
          return imap_deletemailbox($this->getImapStream(), $this->getServerSpecification() . $mailbox);
      }
+
+    public function closeImapStream()
+    {
+        if (is_resource($this->imapStream)) {
+            imap_close($this->imapStream);
+        }
+    }
 }
